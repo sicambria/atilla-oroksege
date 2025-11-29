@@ -161,7 +161,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ onStartGame }) => {
                         onMouseOver={(e) => e.currentTarget.style.color = 'var(--color-accent-gold)'}
                         onMouseOut={(e) => e.currentTarget.style.color = 'var(--color-text-secondary)'}
                     >
-                        Szeretettel ❤️ GitHub
+                        ❤️-el készült, forrás: GitHub
                     </a>
                     <a
                         href="https://osiorokseg.hu/atilla/"

@@ -8,7 +8,8 @@ export type Action =
     | { type: 'END_TURN' }
     | { type: 'CLAIM_LEGACY'; payload: { playerId: string; legacyType: 'sword' | 'seal' | 'bow' | 'chalice' } }
     | { type: 'RESOLVE_THREAT'; payload: { city: CityName; threatIndex: number; cardIds: string[] } }
-    | { type: 'GIVE_CARD'; payload: { playerId: string; targetPlayerId: string; cardId: string } };
+    | { type: 'GIVE_CARD'; payload: { playerId: string; targetPlayerId: string; cardId: string } }
+    | { type: 'LOAD_GAME'; payload: GameState };
 
 export const gameReducer = (state: GameState, action: Action): GameState => {
     switch (action.type) {
@@ -343,6 +344,13 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
                 ...state,
                 players: newPlayers,
                 messages: [...state.messages, `${player.name} átadott egy kártyát (${card.name}) neki: ${targetPlayer.name}`]
+            };
+        }
+
+        case 'LOAD_GAME': {
+            return {
+                ...action.payload,
+                messages: [...action.payload.messages, 'Játék sikeresen betöltve!']
             };
         }
 

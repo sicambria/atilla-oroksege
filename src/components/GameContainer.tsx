@@ -198,6 +198,111 @@ export const GameContainer: React.FC<GameContainerProps> = ({ playerCount, diffi
         return p.currentCity === activePlayer.currentCity; // Others must be in same city
     });
 
+    // Save Game (Download JSON)
+    const saveGame = async () => {
+        const gameStateString = JSON.stringify(state, null, 2);
+
+        // Generate timestamp for filename
+        const date = new Date();
+        const timestamp = date.getFullYear() + '-' +
+            String(date.getMonth() + 1).padStart(2, '0') + '-' +
+            String(date.getDate()).padStart(2, '0') + '_' +
+            String(date.getHours()).padStart(2, '0') + '-' +
+            String(date.getMinutes()).padStart(2, '0') + '-' +
+            String(date.getSeconds()).padStart(2, '0');
+        const filename = `atilla-oroksege-mentes-${timestamp}.json`;
+
+        try {
+            // @ts-ignore - showSaveFilePicker might not be in TS definitions yet
+            if (window.showSaveFilePicker) {
+                // @ts-ignore
+                const handle = await window.showSaveFilePicker({
+                    suggestedName: filename,
+                    types: [{
+                        description: 'JSON File',
+                        accept: { 'application/json': ['.json'] },
+                    }],
+                });
+                const writable = await handle.createWritable();
+                await writable.write(gameStateString);
+                await writable.close();
+                alert('Játék sikeresen mentve!');
+                return;
+            }
+        } catch (err) {
+            // User cancelled or not supported, fallback to download
+            if ((err as Error).name === 'AbortError') {
+                return; // User cancelled
+            }
+            console.log('File picker not supported or error, falling back to download');
+        }
+
+        // Fallback to classic download
+        try {
+            const blob = new Blob([gameStateString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Hiba a mentés során:', error);
+            alert('Hiba történt a mentés során!');
+        }
+    };
+
+    // Load Game (Upload JSON)
+    const loadGame = () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'application/json';
+        input.style.display = 'none';
+
+        input.onchange = (e) => {
+            const file = (e.target as HTMLInputElement).files?.[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const content = event.target?.result as string;
+                    const parsedState = JSON.parse(content);
+
+                    // Validation & Sanitization
+                    if (!parsedState || typeof parsedState !== 'object') {
+                        throw new Error('Érvénytelen fájlformátum.');
+                    }
+
+                    // Check critical fields
+                    const requiredFields = ['players', 'cities', 'gameStatus', 'activePlayerIndex', 'legaciesCollected'];
+                    const missingFields = requiredFields.filter(field => !(field in parsedState));
+
+                    if (missingFields.length > 0) {
+                        throw new Error(`Hiányzó adatok a mentésből: ${missingFields.join(', ')}`);
+                    }
+
+                    // Basic type checks (Sanitization)
+                    if (!Array.isArray(parsedState.players) || typeof parsedState.cities !== 'object') {
+                        throw new Error('Sérült adatstruktúra.');
+                    }
+
+                    dispatch({ type: 'LOAD_GAME', payload: parsedState });
+                } catch (error) {
+                    console.error('Hiba a betöltés során:', error);
+                    alert(`Hiba történt a betöltés során: ${error instanceof Error ? error.message : 'Ismeretlen hiba'}`);
+                }
+            };
+            reader.readAsText(file);
+        };
+
+        document.body.appendChild(input);
+        input.click();
+        document.body.removeChild(input);
+    };
+
     // Simulation Stats Calculation
     const getSimulationStats = () => {
         if (!simStartTime) return null;
@@ -382,6 +487,7 @@ export const GameContainer: React.FC<GameContainerProps> = ({ playerCount, diffi
                 left: '20px',
                 zIndex: 100,
                 display: 'flex',
+                flexDirection: 'column',
                 gap: '10px',
                 alignItems: 'center'
             }}>
@@ -418,6 +524,68 @@ export const GameContainer: React.FC<GameContainerProps> = ({ playerCount, diffi
                         -
                     </button>
                 </div>
+
+                {/* Save Game Button */}
+                <button
+                    onClick={saveGame}
+                    style={{
+                        background: 'var(--color-bg-panel)',
+                        border: '2px solid var(--color-accent-gold)',
+                        borderRadius: '50%',
+                        width: '50px',
+                        height: '50px',
+                        cursor: 'pointer',
+                        fontSize: '1.5rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+                        transition: 'transform 0.2s, box-shadow 0.2s',
+                        color: 'var(--color-accent-gold)'
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.1)';
+                        e.currentTarget.style.boxShadow = '0 6px 12px rgba(0,0,0,0.3)';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+                    }}
+                    title="Játék Mentése"
+                >
+                    💾
+                </button>
+
+                {/* Load Game Button */}
+                <button
+                    onClick={loadGame}
+                    style={{
+                        background: 'var(--color-bg-panel)',
+                        border: '2px solid var(--color-accent-gold)',
+                        borderRadius: '50%',
+                        width: '50px',
+                        height: '50px',
+                        cursor: 'pointer',
+                        fontSize: '1.5rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+                        transition: 'transform 0.2s, box-shadow 0.2s',
+                        color: 'var(--color-accent-gold)'
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.1)';
+                        e.currentTarget.style.boxShadow = '0 6px 12px rgba(0,0,0,0.3)';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+                    }}
+                    title="Játék Betöltése"
+                >
+                    📂
+                </button>
 
                 {/* Help Button */}
                 <button

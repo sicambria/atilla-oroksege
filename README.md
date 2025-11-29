@@ -99,6 +99,7 @@ Minden játékos körében:
 - 🎓 **Tutorial rendszer** - Lépésről lépésre útmutató
 - 📖 **Beépített súgó** - Szabályok, szerepek, jelmagyarázat
 - 🎭 **Karakter bemutató** - Animált intro minden karakterhez
+- 💾 **Mentés és Betöltés** - Játékállás mentése JSON fájlba és visszatöltése
 
 ### Technikai Funkciók
 
@@ -368,8 +369,8 @@ Ha kérdésed van vagy visszajelzést szeretnél adni:
 
 ## 🎯 Tervezett Funkciók
 
-- [ ] Mentés/Betöltés funkció
-- [ ] Hangeffektek és zene
+- [x] Mentés/Betöltés funkció
+- [ ] Hangeffektek és zene: https://osiorokseg.hu/letoltes/
 
 
 ---
