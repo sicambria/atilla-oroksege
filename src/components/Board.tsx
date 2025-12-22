@@ -204,7 +204,7 @@ export const Board: React.FC<BoardProps> = ({ gameState, onCityClick, onResolveT
                                     }}>
                                         {city.threats.map((threat, idx) => {
                                             const details = THREAT_DETAILS[threat];
-                                            const color = details?.type === 'External' ? '#8b0000' : '#daa520';
+                                            const color = details?.color || '#daa520';
 
                                             return (
                                                 <div

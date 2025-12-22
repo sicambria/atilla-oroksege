@@ -20,29 +20,29 @@ export const CITIES: Record<CityName, { region: RegionName; x: number; y: number
     'Gyulafehérvár': { region: 'Dákia', x: 31, y: 34 },
     'Boriszténész': { region: 'Szkítia', x: 45, y: 37 },
     'Buhara': { region: 'Turán-alföld', x: 59, y: 36 },
-    'Turfán': { region: 'Ujgur Tartomány', x: 70, y: 39 },
+    'Turfán': { region: 'Ujgur Tartomány', x: 75, y: 39 },
     'Ordosz': { region: 'Mongólia', x: 87, y: 35 },
 
     // Row 3 (y: ~60%) - South-Central cities (including capital)
-    'Buda': { region: 'Pannónia', x: 16, y: 53 },
+    'Buda': { region: 'Pannónia', x: 25, y: 47 },
     'Szerém': { region: 'Gepidaföld', x: 28, y: 57 },
-    'Etil': { region: 'Atilla Udvara', x: 43, y: 56 },
-    'Don': { region: 'Alánföld', x: 55, y: 58 },
-    'Szamarkand': { region: 'Turán-alföld', x: 69, y: 55 },
-    'Kubán': { region: 'Alánföld', x: 83, y: 57 },
+    'Etil': { region: 'Atilla Udvara', x: 40, y: 56 },
+    'Don': { region: 'Alánföld', x: 55, y: 48 },
+    'Szamarkand': { region: 'Turán-alföld', x: 79, y: 55 },
+    'Kubán': { region: 'Alánföld', x: 83, y: 67 },
 
     // Row 4 (y: ~80%) - Southern cities
-    'Pécs': { region: 'Pannónia', x: 13, y: 72 },
+    'Pécs': { region: 'Pannónia', x: 10, y: 72 },
     'Szeged': { region: 'Jazygföld', x: 26, y: 78 },
-    'Nándorfehérvár': { region: 'Gepidaföld', x: 41, y: 74 },
+    'Nándorfehérvár': { region: 'Gepidaföld', x: 41, y: 79 },
     'Temesvár': { region: 'Mözia', x: 56, y: 77 },
-    'Várna': { region: 'Bolgárföld', x: 67, y: 72 },
+    'Várna': { region: 'Bolgárföld', x: 67, y: 78 },
     'Ódesszosz': { region: 'Bolgárföld', x: 82, y: 80 },
 
     // Additional cities (slightly off-grid for better spacing)
-    'Partiskum': { region: 'Jazygföld', x: 21, y: 66 },
-    'Nikápoly': { region: 'Mözia', x: 50, y: 63 },
-    'Aracsa': { region: 'Mözia', x: 60, y: 68 }
+    'Partiskum': { region: 'Jazygföld', x: 21, y: 68 },
+    'Nikápoly': { region: 'Mözia', x: 60, y: 65 },
+    'Aracsa': { region: 'Mözia', x: 70, y: 68 }
 
 };
 
@@ -99,15 +99,15 @@ export const ADJACENCY: Record<CityName, CityName[]> = {
     'Kasgár': ['Turfán', 'Kobdo']
 };
 
-export const THREAT_DETAILS: Record<ThreatType, { type: 'Internal' | 'External'; counter: CardSubType; amount: number }> = {
-    'Rossz termés': { type: 'Internal', counter: 'Kereskedelem', amount: 3 },
-    'Rablóbanda': { type: 'Internal', counter: 'Harci', amount: 2 },
-    'Járvány': { type: 'Internal', counter: 'Gyógyítás', amount: 3 },
-    'Belviszály': { type: 'Internal', counter: 'Diplomácia', amount: 4 },
-    'Nomád támadás': { type: 'External', counter: 'Védelmi', amount: 3 },
-    'Római intrika': { type: 'External', counter: 'Diplomácia', amount: 3 },
-    'Germán felkelés': { type: 'External', counter: 'Harci', amount: 4 },
-    'Perzsa portyázók': { type: 'External', counter: 'Lovas', amount: 3 }
+export const THREAT_DETAILS: Record<ThreatType, { type: 'Internal' | 'External'; counter: CardSubType; amount: number; color: string }> = {
+    'Rossz termés': { type: 'Internal', counter: 'Kereskedelem', amount: 2, color: '#e67e22' },
+    'Rablóbanda': { type: 'Internal', counter: 'Harci', amount: 2, color: '#7f8c8d' },
+    'Járvány': { type: 'Internal', counter: 'Gyógyítás', amount: 3, color: '#27ae60' },
+    'Belviszály': { type: 'Internal', counter: 'Diplomácia', amount: 4, color: '#9b59b6' },
+    'Nomád támadás': { type: 'External', counter: 'Védelmi', amount: 3, color: '#e74c3c' },
+    'Római intrika': { type: 'External', counter: 'Diplomácia', amount: 3, color: '#2980b9' },
+    'Germán felkelés': { type: 'External', counter: 'Harci', amount: 4, color: '#d35400' },
+    'Perzsa portyázók': { type: 'External', counter: 'Lovas', amount: 3, color: '#16a085' }
 };
 
 export const CRISIS_CARDS: { type: CrisisType; description: string }[] = [

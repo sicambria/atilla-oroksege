@@ -9,10 +9,17 @@ export type Action =
     | { type: 'CLAIM_LEGACY'; payload: { playerId: string; legacyType: 'sword' | 'seal' | 'bow' | 'chalice' } }
     | { type: 'RESOLVE_THREAT'; payload: { city: CityName; threatIndex: number; cardIds: string[] } }
     | { type: 'GIVE_CARD'; payload: { playerId: string; targetPlayerId: string; cardId: string } }
+    | { type: 'LOG_MESSAGE'; payload: { message: string } }
     | { type: 'LOAD_GAME'; payload: GameState };
 
 export const gameReducer = (state: GameState, action: Action): GameState => {
     switch (action.type) {
+        case 'LOG_MESSAGE': {
+            return {
+                ...state,
+                messages: [...state.messages, action.payload.message]
+            };
+        }
         case 'MOVE_PLAYER': {
             const { playerId, destination } = action.payload;
             const playerIndex = state.players.findIndex(p => p.id === playerId);
@@ -29,7 +36,12 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
                 };
             }
 
-            if (player.actionsRemaining < 1) return state;
+            if (player.actionsRemaining < 1) {
+                return {
+                    ...state,
+                    messages: [...state.messages, `Nincs elég akciópontod a mozgáshoz!`]
+                };
+            }
 
             const newPlayers = [...state.players];
             newPlayers[playerIndex] = {
@@ -58,7 +70,12 @@ export const gameReducer = (state: GameState, action: Action): GameState => {
             const requiredAmount = THREAT_DETAILS[threat].amount;
 
             // Validate player is in the city
-            if (activePlayer.currentCity !== city) return state;
+            if (activePlayer.currentCity !== city) {
+                return {
+                    ...state,
+                    messages: [...state.messages, `Nem vagy ${city} városában, nem háríthatod el az ottani fenyegetést!`]
+                };
+            }
 
             // Validate cards
             const cardsToPlay = activePlayer.hand.filter(c => cardIds.includes(c.id));

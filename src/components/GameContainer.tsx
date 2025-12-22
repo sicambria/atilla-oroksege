@@ -8,7 +8,8 @@ import { BottomToolbar } from './BottomToolbar';
 import { TutorialOverlay } from './TutorialOverlay';
 import { CharacterIntroModal } from './CharacterIntroModal';
 import { HelpModal } from './HelpModal';
-import { LEGACY_LOCATIONS } from '../constants';
+import { CardOverviewModal } from './CardOverviewModal';
+import { LEGACY_LOCATIONS, THREAT_DETAILS } from '../constants';
 import type { CityName, ThreatType } from '../types';
 import { getNextBestAction } from '../logic/simulation';
 
@@ -26,6 +27,7 @@ export const GameContainer: React.FC<GameContainerProps> = ({ playerCount, diffi
     const [showCharacterIntro, setShowCharacterIntro] = useState(true);
     const [currentIntroCharacter, setCurrentIntroCharacter] = useState(0);
     const [showHelp, setShowHelp] = useState(false);
+    const [showCardOverview, setShowCardOverview] = useState(false);
     // Helper function to calculate initial map position centered on capital city
     // Accounts for right sidebar (320px width) by shifting center to the left
     const getInitialMapTransform = () => {
@@ -132,10 +134,6 @@ export const GameContainer: React.FC<GameContainerProps> = ({ playerCount, diffi
         });
     }, [state.players, state.activePlayerIndex, isSimulationMode]);
 
-    const handlePlayCard = useCallback((cardId: string) => {
-        console.log('Play card:', cardId);
-        dispatch({ type: 'PLAY_CARD', payload: { playerId: state.players[state.activePlayerIndex].id, cardId } });
-    }, [state.players, state.activePlayerIndex]);
 
     const handleGiveCard = (targetId: string, cardId: string) => {
         dispatch({
@@ -168,6 +166,49 @@ export const GameContainer: React.FC<GameContainerProps> = ({ playerCount, diffi
             payload: { city, threatIndex, cardIds: cardsToPlay }
         });
     }, [state.players, state.activePlayerIndex]);
+
+    const handlePlayCard = useCallback((cardId: string) => {
+        const activePlayer = state.players[state.activePlayerIndex];
+        const card = activePlayer.hand.find(c => c.id === cardId);
+
+        if (!card) return;
+
+        if (activePlayer.actionsRemaining < 1 && card.type !== 'Blessing') {
+            dispatch({ type: 'LOG_MESSAGE', payload: { message: `Nincs elég akciópontod ${card.name} kijátszásához!` } });
+            return;
+        }
+
+        if (card.type === 'Blessing') {
+            dispatch({ type: 'PLAY_CARD', payload: { playerId: activePlayer.id, cardId } });
+        } else if (card.type === 'Action') {
+            const currentCity = state.cities[activePlayer.currentCity];
+            if (!currentCity) return;
+
+            if (currentCity.threats.length === 0) {
+                dispatch({ type: 'LOG_MESSAGE', payload: { message: `Nincs fenyegetés ${activePlayer.currentCity} városában!` } });
+                return;
+            }
+
+            // Find if there's any threat this card could potentially address
+            const matchingThreat = currentCity.threats.find(t => THREAT_DETAILS[t]?.counter === card.subType);
+
+            if (!matchingThreat) {
+                dispatch({ type: 'LOG_MESSAGE', payload: { message: `${card.name} (${card.subType}) nem használható az itteni fenyegetések ellen.` } });
+                return;
+            }
+
+            const details = THREAT_DETAILS[matchingThreat];
+            const matchingCardsCount = activePlayer.hand.filter(c => c.subType === details.counter).length;
+
+            if (matchingCardsCount < details.amount) {
+                dispatch({ type: 'LOG_MESSAGE', payload: { message: `Nincs elég ${details.counter} kártyád! Ehhez (${matchingThreat}) ${details.amount} db kell.` } });
+                return;
+            }
+
+            const threatIndex = currentCity.threats.indexOf(matchingThreat);
+            handleResolveThreat(activePlayer.currentCity, threatIndex, matchingThreat);
+        }
+    }, [state.players, state.activePlayerIndex, state.cities, handleResolveThreat]);
 
     const handleNextCharacter = () => {
         if (currentIntroCharacter < state.players.length - 1) {
@@ -465,6 +506,10 @@ export const GameContainer: React.FC<GameContainerProps> = ({ playerCount, diffi
                 />
             )}
 
+            {showCardOverview && (
+                <CardOverviewModal gameState={state} onClose={() => setShowCardOverview(false)} />
+            )}
+
             {showHelp && (
                 <HelpModal onClose={() => setShowHelp(false)} />
             )}
@@ -692,6 +737,7 @@ export const GameContainer: React.FC<GameContainerProps> = ({ playerCount, diffi
                 <BottomToolbar
                     onEndTurn={handleEndTurn}
                     onClaimLegacy={canClaim ? () => handleClaimLegacy(availableLegacy![0] as any) : undefined}
+                    onOpenCardOverview={() => setShowCardOverview(true)}
                     canClaimLegacy={canClaim}
                     actionsRemaining={activePlayer.actionsRemaining}
                     activePlayerName={activePlayer.name}

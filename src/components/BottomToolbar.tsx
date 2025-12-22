@@ -3,6 +3,7 @@ import React from 'react';
 interface BottomToolbarProps {
     onEndTurn: () => void;
     onClaimLegacy?: () => void;
+    onOpenCardOverview?: () => void;
     canClaimLegacy: boolean;
     actionsRemaining: number;
     activePlayerName: string;
@@ -20,6 +21,7 @@ interface BottomToolbarProps {
 export const BottomToolbar: React.FC<BottomToolbarProps> = ({
     onEndTurn,
     onClaimLegacy,
+    onOpenCardOverview,
     canClaimLegacy,
     actionsRemaining,
     activePlayerName,
@@ -47,6 +49,40 @@ export const BottomToolbar: React.FC<BottomToolbarProps> = ({
                         Akciók: <span style={{ color: 'var(--color-text-primary)', fontWeight: 'bold' }}>{actionsRemaining}</span>
                     </div>
                 </div>
+
+                {/* Card Overview Button */}
+                {onOpenCardOverview && (
+                    <button
+                        onClick={onOpenCardOverview}
+                        style={{
+                            background: 'var(--color-bg-panel)',
+                            border: '2px solid var(--color-accent-gold)',
+                            borderRadius: '8px',
+                            padding: '0.6rem 1rem',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            color: 'var(--color-accent-gold)',
+                            fontSize: '1rem',
+                            fontWeight: 'bold',
+                            transition: 'transform 0.2s, box-shadow 0.2s',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                            e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.3)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+                        }}
+                        title="Kártyák és Fenyegetések Áttekintése"
+                    >
+                        <span style={{ fontSize: '1.3rem' }}>🎴</span>
+                        <span>Áttekintés</span>
+                    </button>
+                )}
             </div>
 
             {/* Center Section - Game Stats */}

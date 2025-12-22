@@ -1,4 +1,4 @@
-# 🏛️ Atilla Öröksége
+# 🏹 Atilla Öröksége
 
 **Együttműködő stratégiai társasjáték a Hun Birodalom megmentéséért**
 
@@ -15,13 +15,13 @@
 
 - [Áttekintés](#-áttekintés)
 - [Játékmenet](#-játékmenet)
+- [Játékszabályok](#-játékszabályok)
 - [Funkciók](#-funkciók)
 - [Technológiai Stack](#-technológiai-stack)
 - [Telepítés](#-telepítés)
 - [Fejlesztés](#-fejlesztés)
 - [Build és Deploy](#-build-és-deploy)
 - [Projekt Struktúra](#-projekt-struktúra)
-- [Játékszabályok](#-játékszabályok)
 - [Hozzájárulás](#-hozzájárulás)
 - [Licensz](#-licensz)
 
@@ -42,8 +42,6 @@ Gyűjtsétek össze mind a **4 Szent Örökséget** (Atilla Kardja, Turulpecsét
 - 👥 **6 egyedi karakter** - Mindegyik különleges képességgel
 - 🎲 **4 nehézségi szint** - Kezdőtől legendásig
 - 🌓 **Sötét/Világos téma** - Teljesen testreszabható megjelenés
-- 📱 **Reszponzív design** - Működik minden eszközön
-- 🎨 **Gyönyörű UI** - Modern, magyar tematikájú dizájn
 
 ---
 
@@ -76,11 +74,72 @@ Minden játékos körében:
 
 ---
 
+
+## 📜 Játékszabályok
+
+### Nehézségi Szintek
+
+| Szint | Kezdő Fenyegetés | Vihar Kártyák | Krízis Kártyák | Leírás |
+|-------|------------------|---------------|----------------|---------|
+| **Kezdő** | 0 | 2 | 1 | Ideális az első játékhoz |
+| **Normál** | 2 | 3 | 1 | Kiegyensúlyozott kihívás |
+| **Mester** | 4 | 4 | 2 | Komoly stratégiát igényel |
+| **Legendás** | 8 | 6 | 3 | Csak a legjobbaknak! |
+
+### Karakterek
+
+1. **Ellák** - Atilla legidősebb fia
+   - Képesség: Ingyen mozgás körönként egyszer
+   - Kezdő kártyák: 2x Lovasroham
+
+2. **Aranka** - A Táltos Gyógyító
+   - Képesség: Gyógyítás kártyák dupla erővel
+   - Kezdő kártyák: 2x Gyógyító rítus
+
+3. **Baján** - A Bölcs Tanácsos
+   - Képesség: Diplomácia kártyák univerzálisak
+   - Kezdő kártyák: 2x Kereskedelem
+
+4. **Réka** - A Történetmesélő
+   - Képesség: Távoli kártyaátadás
+   - Kezdő kártyák: 2x Tanácsadás
+
+5. **Dengizik** - A Harcedzett Vezér
+   - Képesség: Védelmi kártyák dupla erővel
+   - Kezdő kártyák: 2x Határvédelem
+
+6. **Onegeszius** - A Harcos Költő
+   - Képesség: Látja a pakli tetejét (2 kártya)
+   - Kezdő kártyák: 2x Stratégiai terv
+
+### Szent Örökségek Helyszínei
+
+- 🗡️ **Atilla Kardja** - Szombathely
+- 🔏 **Turulpecsét** - Kubán
+- 🏹 **Arany Íj** - Dnyeszter
+- 🏆 **Táltos Kehely** - Partiskum
+
+### Fenyegetéstípusok
+
+**Belső fenyegetések:**
+- Rossz termés (Kereskedelem)
+- Rablóbanda (Harci)
+- Járvány (Gyógyítás)
+- Belviszály (Diplomácia)
+
+**Külső fenyegetések:**
+- Nomád támadás (Védelmi)
+- Római intrika (Diplomácia)
+- Germán felkelés (Harci)
+- Perzsa portyázók (Lovas)
+
+---
+
+
 ## ✨ Funkciók
 
 ### Játék Funkciók
 
-- ✅ **Teljes körű játéklogika** - Minden szabály implementálva
 - ✅ **6 játszható karakter** - Egyedi képességekkel és kezdőkártyákkal
 - ✅ **29 város** - Történelmi helyszínekkel
 - ✅ **8 fenyegetéstípus** - Belső és külső veszélyek
@@ -91,7 +150,6 @@ Minden játékos körében:
 
 ### UI/UX Funkciók
 
-- 🎨 **Prémium dizájn** - Glassmorphism, gradientek, animációk
 - 🌓 **Téma váltás** - Sötét és világos mód
 - 📊 **Részletes statisztikák** - Kör, fenyegetések, pakli méret
 - 🎯 **Interaktív térkép** - Zoom, pan, drag funkcionalitás
@@ -106,7 +164,6 @@ Minden játékos körében:
 - ⚡ **Gyors betöltés** - Vite build optimalizáció
 - 🔄 **State management** - React useReducer
 - 🎯 **TypeScript** - Teljes típusbiztonság
-- 📱 **Reszponzív** - Mobile-first design
 - 🌐 **Subfolder deploy** - Működik alkönyvtárból is
 - 🎮 **Szimuláció mód** - AI teszteléshez (Ctrl+Shift+S)
 
@@ -128,7 +185,7 @@ Minden játékos körében:
 
 ### Development Tools
 
-- **ESLint** - Kód minőség
+- **ESLint**
 - **TypeScript Compiler** - Típusellenőrzés
 - **Vite HMR** - Hot Module Replacement
 
@@ -272,66 +329,6 @@ atilla-oroksege/
 ├── package.json            # Projekt metaadatok
 └── README.md              # Ez a fájl
 ```
-
----
-
-## 📜 Játékszabályok
-
-### Nehézségi Szintek
-
-| Szint | Kezdő Fenyegetés | Vihar Kártyák | Krízis Kártyák | Leírás |
-|-------|------------------|---------------|----------------|---------|
-| **Kezdő** | 0 | 2 | 1 | Ideális az első játékhoz |
-| **Normál** | 2 | 3 | 1 | Kiegyensúlyozott kihívás |
-| **Mester** | 4 | 4 | 2 | Komoly stratégiát igényel |
-| **Legendás** | 8 | 6 | 3 | Csak a legjobbaknak! |
-
-### Karakterek
-
-1. **Ellák** - Atilla legidősebb fia
-   - Képesség: Ingyen mozgás körönként egyszer
-   - Kezdő kártyák: 2x Lovasroham
-
-2. **Aranka** - A Táltos Gyógyító
-   - Képesség: Gyógyítás kártyák dupla erővel
-   - Kezdő kártyák: 2x Gyógyító rítus
-
-3. **Baján** - A Bölcs Tanácsos
-   - Képesség: Diplomácia kártyák univerzálisak
-   - Kezdő kártyák: 2x Kereskedelem
-
-4. **Réka** - A Történetmesélő
-   - Képesség: Távoli kártyaátadás
-   - Kezdő kártyák: 2x Tanácsadás
-
-5. **Dengizik** - A Harcedzett Vezér
-   - Képesség: Védelmi kártyák dupla erővel
-   - Kezdő kártyák: 2x Határvédelem
-
-6. **Onegeszius** - A Harcos Költő
-   - Képesség: Látja a pakli tetejét (2 kártya)
-   - Kezdő kártyák: 2x Stratégiai terv
-
-### Szent Örökségek Helyszínei
-
-- 🗡️ **Atilla Kardja** - Szombathely
-- 🔏 **Turulpecsét** - Kubán
-- 🏹 **Arany Íj** - Dnyeszter
-- 🏆 **Táltos Kehely** - Partiskum
-
-### Fenyegetéstípusok
-
-**Belső fenyegetések:**
-- Rossz termés (Kereskedelem)
-- Rablóbanda (Harci)
-- Járvány (Gyógyítás)
-- Belviszály (Diplomácia)
-
-**Külső fenyegetések:**
-- Nomád támadás (Védelmi)
-- Római intrika (Diplomácia)
-- Germán felkelés (Harci)
-- Perzsa portyázók (Lovas)
 
 ---
 

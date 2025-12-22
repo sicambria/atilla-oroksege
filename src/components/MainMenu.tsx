@@ -234,7 +234,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ onStartGame }) => {
                             </p>
                             <p>
                                 A fővárosban összegyűlt a Főurak Tanácsa. Hat Vezér ül a kerekasztal mellett. Előttük füstölög a szent tűz, az ősök szellemei figyelnek.
-                                <strong> Nincs idő gyászra. A birodalom felbomlik, ha nem cselekesztek!</strong>
+                                <strong> Nincs idő gyászra. A birodalom felbomlik, ha nem cselekszetek!</strong>
                             </p>
                             <p>
                                 Belső viszályok törnek felszínre: rossz termés, rablóbandák, járványok. Kívülről a leigázott népek lázadnak, rómaiak intrikálnak.
@@ -249,7 +249,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ onStartGame }) => {
                                 <li><strong>Négy Szent Örökség megszerzése:</strong> Atilla kardja, Turulpecsét, Arany íj, Táltos kehely.</li>
                                 <li><strong>A Főváros (Atilla udvarhelye) védelmének fenntartása.</strong></li>
                                 <li><strong>Legalább 4 tartomány uralmának megtartása a 6-ból.</strong></li>
-                                <li><strong>A játék végéig túlélés.</strong></li>
+
                             </ul>
 
                             <h3 style={{ color: 'var(--color-text-primary)' }}>VERESÉGI FELTÉTELEK</h3>
@@ -285,7 +285,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ onStartGame }) => {
                                 <li><strong>Legendás:</strong> 8 kezdő fenyegetés, 6 vihar kártya, 3 krízis. Csak a legjobbaknak - Isten ostora!</li>
                             </ul>
                             <p style={{ fontStyle: 'italic', color: 'var(--color-text-secondary)', marginTop: '1rem' }}>
-                                💡 <strong>Tipp:</strong> A vihar kártyák eszkalálják a fenyegetéseket - minden 4. vihar után egyre több veszély jelenik meg!
+                                💡 <strong>Tipp:</strong> A vihar kártyák súlyosbítják a fenyegetéseket - minden 4. vihar után egyre több veszély jelenik meg!
                             </p>
 
                             <div style={{ marginTop: '3rem', textAlign: 'center' }}>

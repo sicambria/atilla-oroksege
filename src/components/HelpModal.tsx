@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ROLES } from '../constants';
+import { ROLES, THREAT_DETAILS } from '../constants';
 
 interface HelpModalProps {
     onClose: () => void;
@@ -250,35 +250,38 @@ export const HelpModal: React.FC<HelpModalProps> = ({ onClose }) => {
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                                 <div>
                                     <h3 style={{ color: 'var(--color-accent-gold)' }}>Fenyegetések</h3>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                            <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#daa520', border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>🛡️</div>
-                                            <div>
-                                                <strong>Belső Viszály</strong>
-                                                <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>Elhárítás: Diplomácia kártya</div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '400px', overflowY: 'auto', paddingRight: '0.5rem' }}>
+                                        {Object.entries(THREAT_DETAILS).map(([name, details]) => (
+                                            <div key={name} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                                <div style={{
+                                                    width: '32px',
+                                                    height: '32px',
+                                                    borderRadius: '50%',
+                                                    background: details.color,
+                                                    border: '2px solid white',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    flexShrink: 0,
+                                                    boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                                                }}>
+                                                    {name.includes('Járvány') ? '💀' :
+                                                        name.includes('termés') ? '🌾' :
+                                                            name.includes('támadás') ? '⚔️' :
+                                                                name.includes('banda') ? '💰' :
+                                                                    name.includes('intrika') ? '📜' :
+                                                                        name.includes('felkelés') ? '🚩' :
+                                                                            name.includes('portyázók') ? '🐎' :
+                                                                                '🛡️'}
+                                                </div>
+                                                <div>
+                                                    <strong style={{ fontSize: '0.95rem' }}>{name}</strong>
+                                                    <div style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>
+                                                        {details.type === 'Internal' ? 'Belső' : 'Külső'} • Elhárítás: {details.amount}× {details.counter}
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                            <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#8b0000', border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>⚔️</div>
-                                            <div>
-                                                <strong>Külső Támadás</strong>
-                                                <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>Elhárítás: Hadsereg kártya</div>
-                                            </div>
-                                        </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                            <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#daa520', border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>🌾</div>
-                                            <div>
-                                                <strong>Rossz Termés</strong>
-                                                <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>Elhárítás: Ellátmány kártya</div>
-                                            </div>
-                                        </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                            <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#daa520', border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>💀</div>
-                                            <div>
-                                                <strong>Járvány</strong>
-                                                <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>Elhárítás: Gyógyítás kártya</div>
-                                            </div>
-                                        </div>
+                                        ))}
                                     </div>
                                 </div>
 
@@ -295,7 +298,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ onClose }) => {
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                             <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: 'radial-gradient(circle, #ffd700, var(--color-bg-dark))', border: '2px solid #ffd700', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>👑</div>
-                                            <div><strong>Főváros (Etil)</strong> - Védjétek meg minden áron!</div>
+                                            <div><strong>Főváros (Etil)</strong> - Védjétek meg mindenáron!</div>
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                             <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: 'radial-gradient(circle, #8b0000, var(--color-bg-dark))', border: '2px solid #8b0000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}></div>
